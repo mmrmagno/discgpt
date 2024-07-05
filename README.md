@@ -73,7 +73,7 @@ Once the bot is running, you can interact with it on your Discord server using t
 
 1.  **Ask a question**:
 
-   ```plaintext
+    ```plaintext
     /discgpt What is the capital of France?
 
     Response: "The capital of France is Paris."

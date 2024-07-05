@@ -9,9 +9,6 @@ load_dotenv()
 DISCORD_BOT_TOKEN = os.getenv('DISCORD_BOT_TOKEN')
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
-print(f"DISCORD_BOT_TOKEN: {DISCORD_BOT_TOKEN}")
-print(f"OPENAI_API_KEY: {OPENAI_API_KEY}")
-
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 intents = discord.Intents.default()

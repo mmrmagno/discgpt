@@ -25,46 +25,36 @@ Installation
 
 1.  **Clone the repository**:
 
-    bash
-
-    Copy code
-
-    `git clone https://github.com/yourusername/discgpt-bot.git
-    cd discgpt-bot`
+    ```bash
+    git clone https://github.com/yourusername/discgpt-bot.git
+    cd discgpt-bot
+    ```
 
 2.  **Create and activate a virtual environment**:
 
-    bash
-
-    Copy code
-
-    `python -m venv venv
+    ```bash
+    python -m venv venv
     source venv/bin/activate  # On Windows use `venv\Scripts\activate``
+    ```
 
 3.  **Install dependencies**:
 
-    bash
-
-    Copy code
-
-    `pip install -r requirements.txt`
+    ```bash
+    pip install -r requirements.txt
+    ```
 
 4.  **Create a `.env` file** in the project root and add your Discord bot token and OpenAI API key:
 
-    plaintext
-
-    Copy code
-
-    `DISCORD_BOT_TOKEN=your_discord_bot_token
-    OPENAI_API_KEY=your_openai_api_key`
+    ```plaintext
+    DISCORD_BOT_TOKEN=your_discord_bot_token
+    OPENAI_API_KEY=your_openai_api_key
+    ```
 
 5.  **Run the bot**:
 
-    bash
-
-    Copy code
-
-    `python bot.py`
+    ```bash
+    python bot.py
+    ```
 
 Usage
 -----
@@ -83,44 +73,34 @@ Once the bot is running, you can interact with it on your Discord server using t
 
 1.  **Ask a question**:
 
-    plaintext
-
-    Copy code
-
-    `/discgpt What is the capital of France?`
+   ```plaintext
+    /discgpt What is the capital of France?
 
     Response: "The capital of France is Paris."
+    ```
 
 2.  **Get a joke**:
 
-    plaintext
-
-    Copy code
-
-    `/preprompt joke`
-
+    ```plaintext
+    /preprompt joke
+    
     Response: "Why don't scientists trust atoms? Because they make up everything!"
+    ```
 
 3.  **View your history**:
 
-    plaintext
-
-    Copy code
-
-    `/history`
+    ```plaintext
+    /history
+    ```
 
 4.  **Clear your history**:
 
-    plaintext
-
-    Copy code
-
-    `/clearhistory`
+    ```plaintext
+    /clearhistory
+    ```
 
 5.  **Get help**:
 
-    plaintext
-
-    Copy code
-
-    `/helpdiscgpt`
+    ```plaintext
+    /helpdiscgpt
+    ```

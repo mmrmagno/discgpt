@@ -1,4 +1,5 @@
 import os
+import json
 import discord
 from discord.ext import commands
 from discord import app_commands
@@ -10,6 +11,9 @@ DISCORD_BOT_TOKEN = os.getenv('DISCORD_BOT_TOKEN')
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
 client = OpenAI(api_key=OPENAI_API_KEY)
+
+with open('preprompts.json', 'r') as file:
+    preprompts = json.load(file)
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -23,10 +27,8 @@ async def on_ready():
     await tree.sync()
     print(f'Logged in as {bot.user}')
 
-@tree.command(name='discgpt', description='Ask GPT-3 a question')
-@app_commands.describe(prompt='Your question for GPT-3')
-async def discgpt(interaction: discord.Interaction, prompt: str):
-    await interaction.response.defer()
+async def generate_gpt_response(interaction: discord.Interaction, prompt: str):
+    await interaction.response.defer()  
     try:
         response = client.chat.completions.create(
             messages=[
@@ -39,28 +41,27 @@ async def discgpt(interaction: discord.Interaction, prompt: str):
         if interaction.user.id not in user_histories:
             user_histories[interaction.user.id] = []
         user_histories[interaction.user.id].append(prompt)
-        if len(user_histories[interaction.user.id]) > 5:
+        if len(user_histories[interaction.user.id]) > 5:  
             user_histories[interaction.user.id].pop(0)
 
         embed = discord.Embed(title="DisGPT Response", description=answer, color=discord.Color.blue())
-        await interaction.followup.send(embed=embed)
+        await interaction.followup.send(embed=embed)  
     except Exception as e:
         await interaction.followup.send(f"An error occurred: {e}")
+
+@tree.command(name='discgpt', description='Ask GPT-3 a question')
+@app_commands.describe(prompt='Your question for GPT-3')
+async def discgpt(interaction: discord.Interaction, prompt: str):
+    await generate_gpt_response(interaction, prompt)
 
 @tree.command(name='preprompt', description='Choose a pre-defined prompt for GPT-3')
 @app_commands.describe(option='Select a predefined prompt')
 async def preprompt(interaction: discord.Interaction, option: str):
-    predefined_prompts = {
-        "joke": "Tell me a joke.",
-        "advice": "Give me some life advice.",
-        "quote": "Give me a motivational quote."
-    }
-
-    if option in predefined_prompts:
-        prompt = predefined_prompts[option]
-        await discgpt(interaction, prompt)
+    if option in preprompts:
+        prompt = preprompts[option]
+        await generate_gpt_response(interaction, prompt)
     else:
-        await interaction.response.send_message("Invalid option. Choose from 'joke', 'advice', 'quote'.", ephemeral=True)
+        await interaction.response.send_message("Invalid option. Please choose a valid predefined prompt.", ephemeral=True)
 
 @tree.command(name='history', description='Show your prompt history')
 async def history(interaction: discord.Interaction):
@@ -81,7 +82,7 @@ async def clearhistory(interaction: discord.Interaction):
 async def help_discgpt(interaction: discord.Interaction):
     embed = discord.Embed(title="DiscGPT Bot Help", description="Here are the available commands for the DiscGPT bot:", color=discord.Color.purple())
     embed.add_field(name="/discgpt <prompt>", value="Ask GPT-3 a question.", inline=False)
-    embed.add_field(name="/preprompt <option>", value="Choose a pre-defined prompt (options: 'joke', 'advice', 'quote').", inline=False)
+    embed.add_field(name="/preprompt <option>", value="Choose a pre-defined prompt (options: 'joke', 'advice', 'quote', 'story', 'fact', 'riddle', 'poem', 'weather', 'news', 'programming_tip', 'health_tip', 'burrey').", inline=False)
     embed.add_field(name="/history", value="Show your prompt history.", inline=False)
     embed.add_field(name="/clearhistory", value="Clear your prompt history.", inline=False)
     embed.add_field(name="/helpdiscgpt", value="Get help with the DiscGPT bot commands.", inline=False)
